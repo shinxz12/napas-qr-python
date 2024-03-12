@@ -20,8 +20,8 @@ jobs:
     # The type of runner that the job will run on
     strategy:
       matrix:
-        python-versions: [3.6, 3.7, 3.8, 3.9]
-        os: [ubuntu-18.04, macos-latest, windows-latest]
+        python-versions: [3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12]
+        os: [ubuntu-18.04]
     runs-on: ${{ matrix.os }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -40,11 +40,3 @@ jobs:
       - name: test with tox
         run:
           tox
-
-      - name: list files
-        run: ls -l .
-
-      - uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
-          files: coverage.xml

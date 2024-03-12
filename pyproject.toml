@@ -16,9 +16,12 @@ classifiers=[
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
 ]
 packages = [
-    { include = "napas_pay_qr" },
+    { include = "qr_pay" },
     { include = "tests", format = "sdist" },
 ]
 
@@ -71,7 +74,7 @@ doc = [
     ]
 
 [tool.poetry.scripts]
-napas_qr = 'napas_pay_qr.cli:main'
+napas_qr = 'qr_pay.cli:main'
 
 [tool.black]
 line-length = 120

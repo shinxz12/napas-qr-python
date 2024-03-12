@@ -1,4 +1,4 @@
-sources = napas_pay_qr
+sources = qr_pay
 
 .PHONY: test format lint unittest coverage pre-commit clean
 test: format lint unittest

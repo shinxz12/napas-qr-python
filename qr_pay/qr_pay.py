@@ -114,11 +114,11 @@ class QRPay:
         code += checksum
         return code
 
-    def generate_qr_code_image(self, code: str, dist: Optional[str] = None, styles: Optional[dict] = {}) -> str:
-        if not dist:
-            dist = "qr_code.png"
+    def generate_qr_code_image(self, code: str, dist: Optional[str] = None, styles: Optional[dict] = {}):
         img = segno.make_qr(code)
-        img.save(dist, **styles)
+        dist = dist or "qr_code.png"
+        segno_style = styles or {}
+        img.save(dist, **segno_style)
         return img
 
     def generate_qr_pay(self, dist: Optional[str] = None, styles: Optional[dict] = {}) -> None:
