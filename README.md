@@ -9,22 +9,22 @@ and [En Version](https://vietqr.net/portal-service/download/documents/QR_Format_
 * Using [segno](https://segno.readthedocs.io/en/latest/) for QR generator.
 
 # Parameters
-| field           | mandatory | default value | description|
-|-----------------|---------|---------|--------------------|
-| bin_id          | Yes     | None    | BIN ID             |
-| consumer_id     | Yes     | None    | Card/Account ID|
-| service_code    | Yes     | "ACCOUNT"|"PAYMENT", "CASH_WITHDRAWL", "CARD", "ACCOUNT"|
-| transaction_amount        | No      | None  | Amount|
-| purpose_of_transaction.   | No      |  None | Message|
-| point_of_initiation_method| Yes     |  "DYNAMIC"   | "DYNAMIC" OR "STATIC"|
-| transaction_currency      | Yes     |   704(VND) |    currency|
-| bill_number               | No      |   None |    Country code|
-| mobile_number             | No      |   None |    Country code|
-| store_label               | No      |   None   |    Country code|
-| reference_label           | No      |   None   |    Country code|
-| customer_label            | No      |   None   |    Country code|
+| Field                     | Mandatory | Default Value | Description                                    |
+|---------------------------|-----------|---------------|------------------------------------------------|
+| bin_id                    | Yes       | None          | BIN ID                                         |
+| consumer_id               | Yes       | None          | Card/Account ID                                |
+| service_code              | Yes       | "ACCOUNT"     | "PAYMENT", "CASH_WITHDRAWL", "CARD", "ACCOUNT" |
+| transaction_amount        | No        | None          | Amount                                         |
+| purpose_of_transaction.   | No        | None          | Message                                        |
+| point_of_initiation_method| Yes       | "DYNAMIC"     | "DYNAMIC" OR "STATIC"                          |
+| transaction_currency      | Yes       | 704(VND)      | currency                                       |
+| bill_number               | No        | None          | Bill number                                    |
+| mobile_number             | No        | None          | Mobile Number                                  |
+| store_label               | No        | None          | Store Label                                    |
+| reference_label           | No        | None          | Reference Label                                |
+| customer_label            | No        | None          | Customer Label                                 |
 
-Read more in the VietQR docs.
+Please read more in the VietQR docs.
 
 ## Example
 
