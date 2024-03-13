@@ -1,7 +1,7 @@
 # Napas QR Python
 
 [![pypi](https://img.shields.io/pypi/v/napas-qr-python.svg)](https://pypi.org/project/napas-qr-python/)
-[![python](https://img.shields.io/pypi/pyversions/python-boilerplate.svg)](https://pypi.org/project/napas-qr-python/)
+[![python](https://img.shields.io/pypi/pyversions/napas-qr-python.svg)](https://pypi.org/project/napas-qr-python/)
 [![Build Status](https://github.com/shinxz12/napas-qr-python/actions/workflows/dev.yml/badge.svg)](https://github.com/shinxz12/napas-qr-python/actions/workflows/dev.yml)
 
 
