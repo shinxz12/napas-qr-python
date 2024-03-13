@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "napas-qr-python"
-version = "0.1.1"
+version = "0.1.0"
 homepage = "https://github.com/shinxz12/napas-qr-python"
 description = "VietQR for python."
 authors = ["shinxz12 <ngocbthe@gmail.com>"]
