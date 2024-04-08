@@ -150,7 +150,9 @@ class TerminalLabel(Field):
 
 class PurposeOfTransaction(Field):
     id = "08"
-    max_length = 25
+    # max_length = 25
+    # Increasing the max length because some banks support more than the document max length
+    max_length = 90
 
 
 class AdditionalConsumerDataRequest(Field):
