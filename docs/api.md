@@ -1,1 +1,1 @@
-::: napas_pay_qr
+::: qr_pay
