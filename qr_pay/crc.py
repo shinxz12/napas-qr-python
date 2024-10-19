@@ -12,4 +12,4 @@ def calculate_checksum(raw_data: str) -> str:
             else:
                 crc <<= 1
     checksum = crc & 0xFFFF
-    return hex(checksum)[2:].upper()
+    return "%04X" % checksum
