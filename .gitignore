@@ -115,3 +115,6 @@ site/
 
 # banks data
 resources/banks.json
+
+# Source spec PDF (local only)
+na.pdf
