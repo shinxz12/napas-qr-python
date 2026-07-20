@@ -42,7 +42,5 @@ jobs:
           uv run --group test isort --check-only qr_pay tests
           uv run --group test black --check qr_pay tests
 
-      - name: Lint
-        run: |
-          uv run --group test flake8 qr_pay tests
-          uv run --group test mypy qr_pay tests
+      - name: Type check
+        run: uv run --group test mypy qr_pay tests

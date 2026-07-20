@@ -1,4 +1,4 @@
-from typing import List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import segno
 
@@ -81,7 +81,7 @@ class QRPay:
         a payload known to have a non-standard checksum). Raises
         ``qr_pay.decode.QRDecodeError`` on malformed input.
         """
-        data = {k: v for k, v in _decode_payload(code, verify_crc=verify_crc).items() if v is not None}
+        data: Dict[str, Any] = {k: v for k, v in _decode_payload(code, verify_crc=verify_crc).items() if v is not None}
         return cls(**data)
 
     @staticmethod

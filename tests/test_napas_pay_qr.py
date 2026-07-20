@@ -135,6 +135,7 @@ def test_parse_returns_nested_tlv():
 # CRC
 # --------------------------------------------------------------------------- #
 
+
 def test_calculate_checksum_known_value():
     # §6.1.1 CRC input (without the final value) -> F4E5
     data = "00020101021138570010A00000072701270006970403011200110123456780208QRIBFTTA53037045802VN6304"
@@ -158,6 +159,7 @@ def test_verify_checksum_accepts_lowercase_crc_suffix():
 # --------------------------------------------------------------------------- #
 # Field validation
 # --------------------------------------------------------------------------- #
+
 
 def test_invalid_point_of_initiation_method_raises():
     with pytest.raises(ValueError):
@@ -217,6 +219,7 @@ def test_crc_field_has_id_and_length_only():
 # Optional field omission
 # --------------------------------------------------------------------------- #
 
+
 def test_optional_fields_omitted_when_absent():
     code = QRPay('970436', '1031933430').code
     assert "5404" not in code  # no transaction amount object
@@ -235,6 +238,7 @@ def test_static_qr_has_no_amount():
 # --------------------------------------------------------------------------- #
 # Decode / parse error handling
 # --------------------------------------------------------------------------- #
+
 
 def test_decode_empty_payload_raises():
     with pytest.raises(QRDecodeError):
@@ -277,6 +281,7 @@ def test_parse_skips_crc_when_disabled():
 # Official spec examples (§6.1)
 # --------------------------------------------------------------------------- #
 
+
 def test_decode_spec_static_to_card():
     # §6.1.2 QR tĩnh đến thẻ
     code = "00020101021138600010A00000072701300006970403011697040311012345670208QRIBFTTC53037045802VN63044F52"
@@ -306,6 +311,7 @@ def test_decode_spec_dynamic_to_card():
 # TLVObject
 # --------------------------------------------------------------------------- #
 
+
 def test_tlvobject_get_and_repr():
     obj = TLVObject("38", "value", {"00": TLVObject("00", "A000000727")})
     assert obj.get("00") == "A000000727"
@@ -316,6 +322,7 @@ def test_tlvobject_get_and_repr():
 # --------------------------------------------------------------------------- #
 # QR image generation
 # --------------------------------------------------------------------------- #
+
 
 def test_generate_qr_pay_writes_file(tmp_path):
     dist = tmp_path / "out.png"
@@ -333,6 +340,7 @@ def test_generate_qr_code_image_with_styles(tmp_path):
 # --------------------------------------------------------------------------- #
 # CLI
 # --------------------------------------------------------------------------- #
+
 
 def test_cli_encode(capsys):
     rc = cli_main(["encode", "--bin", "970436", "--consumer", "1031933430", "--amount", "2000000"])
@@ -378,6 +386,7 @@ def test_cli_decode_no_verify(capsys):
 # --------------------------------------------------------------------------- #
 # Bank lookup (utils)
 # --------------------------------------------------------------------------- #
+
 
 def test_bank_update_reads_and_looks_up(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)

@@ -5,6 +5,7 @@ Usage::
     napas_qr decode <code>
     napas_qr encode --bin 970436 --consumer 1031933430 [--amount 2000000] ...
 """
+
 import argparse
 import json
 import sys

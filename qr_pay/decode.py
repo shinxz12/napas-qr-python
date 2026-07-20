@@ -5,6 +5,7 @@ where possible, into the fields understood by :class:`qr_pay.QRPay`.
 
 Reference: "Tài liệu quy định về định dạng mã VietQR", NAPAS, v1.0 (09/2021).
 """
+
 from typing import Dict, List, Optional
 
 from .crc import verify_checksum
