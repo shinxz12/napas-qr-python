@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://shinxz12.github.io/napas_qr/</loc>
-         <lastmod>2024-10-19</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://shinxz12.github.io/napas-qr-python/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://shinxz12.github.io/napas_qr/api/</loc>
-         <lastmod>2024-10-19</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://shinxz12.github.io/napas-qr-python/api/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://shinxz12.github.io/napas_qr/changelog/</loc>
-         <lastmod>2024-10-19</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://shinxz12.github.io/napas-qr-python/changelog/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://shinxz12.github.io/napas_qr/contributing/</loc>
-         <lastmod>2024-10-19</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://shinxz12.github.io/napas-qr-python/contributing/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://shinxz12.github.io/napas_qr/installation/</loc>
-         <lastmod>2024-10-19</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://shinxz12.github.io/napas-qr-python/installation/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://shinxz12.github.io/napas_qr/usage/</loc>
-         <lastmod>2024-10-19</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://shinxz12.github.io/napas-qr-python/usage/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://shinxz12.github.io/napas-qr-python/vietqr-spec/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
 </urlset>
