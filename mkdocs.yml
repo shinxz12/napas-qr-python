@@ -1,7 +1,7 @@
 site_name: napas-pay-qr
-site_url: https://shinxz12.github.io/napas_qr
-repo_url: https://github.com/shinxz12/napas_qr
-repo_name: shinxz12/napas_qr
+site_url: https://shinxz12.github.io/napas-qr-python
+repo_url: https://github.com/shinxz12/napas-qr-python
+repo_name: shinxz12/napas-qr-python
 #strict: true
 nav:
   - Home: index.md
@@ -24,8 +24,8 @@ theme:
     - navigation.tabs.sticky
 markdown_extensions:
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.mark
@@ -51,7 +51,7 @@ plugins:
       lang: en
   - mkdocstrings:
       watch:
-        - napas_qr
+        - qr_pay
 extra:
   social:
     - icon: fontawesome/brands/twitter
@@ -63,7 +63,7 @@ extra:
       link: https://github.com/waynerv/cookiecutter-pypackage
       name: Facebook
     - icon: fontawesome/brands/github
-      link: https://github.com/shinxz12/napas_qr
+      link: https://github.com/shinxz12/napas-qr-python
       name: Github
     - icon: material/email
       link: "mailto:ngocbthe@gmail.com"

@@ -2,11 +2,11 @@
 
 ## Stable release
 
-To install napas-pay-qr, run this command in your
+To install napas-qr-python, run this command in your
 terminal:
 
 ``` console
-$ pip install napas_qr
+$ pip install napas-qr-python
 ```
 
 This is the preferred method to install napas-pay-qr, as it will always install the most recent stable release.
@@ -22,13 +22,13 @@ the [Github repo][].
 You can either clone the public repository:
 
 ``` console
-$ git clone git://github.com/shinxz12/napas_qr
+$ git clone https://github.com/shinxz12/napas-qr-python
 ```
 
 Or download the [tarball][]:
 
 ``` console
-$ curl -OJL https://github.com/shinxz12/napas_qr/tarball/master
+$ curl -OJL https://github.com/shinxz12/napas-qr-python/tarball/main
 ```
 
 Once you have a copy of the source, you can install it with:
@@ -39,5 +39,5 @@ $ pip install .
 
   [pip]: https://pip.pypa.io
   [Python installation guide]: http://docs.python-guide.org/en/latest/starting/installation/
-  [Github repo]: https://github.com/%7B%7B%20cookiecutter.github_username%20%7D%7D/%7B%7B%20cookiecutter.project_slug%20%7D%7D
-  [tarball]: https://github.com/%7B%7B%20cookiecutter.github_username%20%7D%7D/%7B%7B%20cookiecutter.project_slug%20%7D%7D/tarball/master
+  [Github repo]: https://github.com/shinxz12/napas-qr-python
+  [tarball]: https://github.com/shinxz12/napas-qr-python/tarball/main

@@ -45,9 +45,10 @@ class PayloadFormatIndicator(Field):
 
 
 class PointOfInitiationMethod(Field):
-    DYNAMIC = "11"
-    STATIC = "12"
-    WHITE_LIST_VALUES = (DYNAMIC, STATIC)
+    # Spec §5.2.2: "11" = static (multi-use), "12" = dynamic (single-use).
+    STATIC = "11"
+    DYNAMIC = "12"
+    WHITE_LIST_VALUES = (STATIC, DYNAMIC)
     id = "01"
     value = DYNAMIC
     max_length = 2
@@ -92,6 +93,11 @@ class ConsumerAccountInformation(Field):
     max_length = 99
 
 
+class MerchantCategoryCode(Field):
+    id = "52"
+    max_length = 4
+
+
 class TransactionCurrency(Field):
     id = "53"
     value = "704"
@@ -103,9 +109,43 @@ class TransactionAmount(Field):
     max_length = 13
 
 
+class TipOrConvenienceIndicator(Field):
+    TIP_PROMPT = "01"
+    FEE_FIXED = "02"
+    FEE_PERCENTAGE = "03"
+    WHITE_LIST_VALUES = (TIP_PROMPT, FEE_FIXED, FEE_PERCENTAGE)
+    id = "55"
+    max_length = 2
+
+
+class ConvenienceFeeFixed(Field):
+    id = "56"
+    max_length = 13
+
+
+class ConvenienceFeePercentage(Field):
+    id = "57"
+    max_length = 5
+
+
 class CountryCode(Field):
     id = "58"
     value = "VN"
+
+
+class MerchantName(Field):
+    id = "59"
+    max_length = 25
+
+
+class MerchantCity(Field):
+    id = "60"
+    max_length = 15
+
+
+class PostalCode(Field):
+    id = "61"
+    max_length = 10
 
 
 class AdditionalDataFieldTemplates(Field):
@@ -158,6 +198,26 @@ class PurposeOfTransaction(Field):
 class AdditionalConsumerDataRequest(Field):
     id = "09"
     max_length = 25
+
+
+class MerchantInformationLanguageTemplate(Field):
+    id = "64"
+    max_length = 99
+
+
+class LanguagePreference(Field):
+    id = "00"
+    max_length = 2
+
+
+class MerchantNameAlt(Field):
+    id = "01"
+    max_length = 25
+
+
+class MerchantCityAlt(Field):
+    id = "02"
+    max_length = 15
 
 
 class Crc(Field):

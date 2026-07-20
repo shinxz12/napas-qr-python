@@ -2,74 +2,36 @@
 
 name: release & publish workflow
 
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push events but only for the master branch
   push:
     tags:
       - 'v*'
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "release"
   release:
     name: Create Release
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-versions: [3.12]
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Get version from tag
         id: tag_name
-        run: |
-          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+        run: echo "current_version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
         shell: bash
 
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # - name: Get Changelog Entry
-      #   id: changelog_reader
-      #   uses: mindsers/changelog-reader-action@v2
-      #   with:
-      #     validation_depth: 10
-      #     version: ${{ steps.tag_name.outputs.current_version }}
-      #     path: ./CHANGELOG.md
-
-      - uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ matrix.python-versions }}
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          enable-cache: true
 
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
-
-      - name: Install project
-        run:  poetry install -E doc --no-interaction
+        run: uv sync --group doc
 
       - name: build documentation
-        run: |
-          poetry run mkdocs build
+        run: uv run mkdocs build
 
       - name: publish documentation
         uses: peaceiris/actions-gh-pages@v3
@@ -78,21 +40,13 @@ jobs:
           publish_dir: ./site
 
       - name: Build wheels and source tarball
-        run: >-
-          poetry build
-
-      - name: show temporary files
-        run: >-
-          ls -l
+        run: uv build
 
       - name: create github release
         id: create_release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          body: ${{ steps.changelog_reader.outputs.changes }}
           token: ${{ secrets.PERSONAL_TOKEN }}
           files: dist/*.whl
           draft: false
@@ -103,4 +57,4 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-          skip_existing: true
+          skip-existing: true

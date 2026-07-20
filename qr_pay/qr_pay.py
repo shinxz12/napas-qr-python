@@ -1,9 +1,11 @@
-from typing import List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import segno
 
 from . import fields
 from .crc import calculate_checksum
+from .decode import decode as _decode_payload
+from .decode import parse as _parse_payload
 
 
 class QRPay:
@@ -17,8 +19,15 @@ class QRPay:
         point_of_initiation_method: Optional[Literal["STATIC", "DYNAMIC"]] = "DYNAMIC",
         glocal_uuid: Optional[str] = None,
         service_code: Optional[Literal["PAYMENT", "CASH_WITHDRAWL", "CARD", "ACCOUNT"]] = "ACCOUNT",
+        merchant_category_code: Optional[str] = None,
         transaction_currency: Optional[str] = None,
+        tip_or_convenience_indicator: Optional[str] = None,
+        convenience_fee_fixed: Optional[str] = None,
+        convenience_fee_percentage: Optional[str] = None,
         country_code: Optional[str] = None,
+        merchant_name: Optional[str] = None,
+        merchant_city: Optional[str] = None,
+        postal_code: Optional[str] = None,
         bill_number: Optional[str] = None,
         mobile_number: Optional[str] = None,
         store_label: Optional[str] = None,
@@ -27,6 +36,9 @@ class QRPay:
         customer_label: Optional[str] = None,
         terminal_label: Optional[str] = None,
         additional_consumer_data_request: Optional[str] = None,
+        language_preference: Optional[str] = None,
+        merchant_name_alt: Optional[str] = None,
+        merchant_city_alt: Optional[str] = None,
         *args,
         **kwargs,
     ):
@@ -38,8 +50,15 @@ class QRPay:
         self.point_of_initiation_method = point_of_initiation_method
         self.global_uuid = glocal_uuid
         self.service_code = service_code
+        self.merchant_category_code = merchant_category_code
         self.transaction_currency = transaction_currency
+        self.tip_or_convenience_indicator = tip_or_convenience_indicator
+        self.convenience_fee_fixed = convenience_fee_fixed
+        self.convenience_fee_percentage = convenience_fee_percentage
         self.country_code = country_code
+        self.merchant_name = merchant_name
+        self.merchant_city = merchant_city
+        self.postal_code = postal_code
         self.bill_number = bill_number
         self.mobile_number = mobile_number
         self.store_label = store_label
@@ -48,8 +67,27 @@ class QRPay:
         self.customer_label = customer_label
         self.terminal_label = terminal_label
         self.purpose_of_transaction = purpose_of_transaction
+        self.language_preference = language_preference
+        self.merchant_name_alt = merchant_name_alt
+        self.merchant_city_alt = merchant_city_alt
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    @classmethod
+    def decode(cls, code: str, verify_crc: bool = True) -> "QRPay":
+        """Build a :class:`QRPay` from a raw VietQR payload string.
+
+        Set ``verify_crc=False`` to skip CRC validation (e.g. when decoding
+        a payload known to have a non-standard checksum). Raises
+        ``qr_pay.decode.QRDecodeError`` on malformed input.
+        """
+        data: Dict[str, Any] = {k: v for k, v in _decode_payload(code, verify_crc=verify_crc).items() if v is not None}
+        return cls(**data)
+
+    @staticmethod
+    def parse(code: str, verify_crc: bool = True):
+        """Parse a raw payload into nested EMVCo TLV objects (no field mapping)."""
+        return _parse_payload(code, verify_crc=verify_crc)
 
     def get_class_name_by_key(self, key: str) -> str:
         words = key.split('_')
@@ -68,30 +106,15 @@ class QRPay:
     def get_value_by_list_key(self, list_key: List[str]) -> str:
         return "".join(list(map(self.get_code_by_key, list_key)))
 
-    @property
-    def code(self) -> str:
-        base_key_list = [
-            "payload_format_indicator",
-            "point_of_initiation_method",
-            "transaction_currency",
-            "transaction_amount",
-            "country_code",
-        ]
-        code_list = [self.get_value_by_list_key(base_key_list)]
-
-        payment_network_specific_value = self.get_value_by_list_key(
-            [
-                "bin_id",
-                "consumer_id",
-            ]
-        )
+    def _merchant_account_information_code(self) -> str:
+        payment_network_specific_value = self.get_value_by_list_key(["bin_id", "consumer_id"])
         payment_network_specific = self.get_code_by_key("payment_network_specific", payment_network_specific_value)
         glocal_uuid = self.get_code_by_key("global_uuid")
         service_code = self.get_code_by_key("service_code")
         account_information_value = glocal_uuid + payment_network_specific + service_code
-        consumer_account_information = self.get_code_by_key("consumer_account_information", account_information_value)
-        code_list.append(consumer_account_information)
+        return self.get_code_by_key("consumer_account_information", account_information_value)
 
+    def _additional_data_code(self) -> str:
         additional_data_keys = [
             "bill_number",
             "mobile_number",
@@ -104,10 +127,34 @@ class QRPay:
             "additional_consumer_data_request",
         ]
         additional_data_value = self.get_value_by_list_key(additional_data_keys)
-        additional_data_field_templates = self.get_code_by_key("additional_data_field_templates", additional_data_value)
-        code_list.append(additional_data_field_templates)
+        return self.get_code_by_key("additional_data_field_templates", additional_data_value)
 
-        code_list.append(self.get_code_by_key("crc", ""))
+    def _merchant_language_code(self) -> str:
+        language_keys = ["language_preference", "merchant_name_alt", "merchant_city_alt"]
+        language_value = self.get_value_by_list_key(language_keys)
+        return self.get_code_by_key("merchant_information_language_template", language_value)
+
+    @property
+    def code(self) -> str:
+        # Root data objects in ascending ID order (spec §6.1 examples), CRC (63) last.
+        code_list = [
+            self.get_code_by_key("payload_format_indicator"),  # 00
+            self.get_code_by_key("point_of_initiation_method"),  # 01
+            self._merchant_account_information_code(),  # 38
+            self.get_code_by_key("merchant_category_code"),  # 52
+            self.get_code_by_key("transaction_currency"),  # 53
+            self.get_code_by_key("transaction_amount"),  # 54
+            self.get_code_by_key("tip_or_convenience_indicator"),  # 55
+            self.get_code_by_key("convenience_fee_fixed"),  # 56
+            self.get_code_by_key("convenience_fee_percentage"),  # 57
+            self.get_code_by_key("country_code"),  # 58
+            self.get_code_by_key("merchant_name"),  # 59
+            self.get_code_by_key("merchant_city"),  # 60
+            self.get_code_by_key("postal_code"),  # 61
+            self._additional_data_code(),  # 62
+            self._merchant_language_code(),  # 64
+            self.get_code_by_key("crc", ""),  # 63 (id + length, value excluded)
+        ]
 
         code = "".join(code_list)
         checksum = calculate_checksum(code)
