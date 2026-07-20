@@ -1,42 +1,48 @@
-# This is a basic workflow to help you get started with Actions
-
 name: dev workflow
 
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master, main ]
   pull_request:
     branches: [ master, main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "test"
   test:
-    # The type of runner that the job will run on
     strategy:
+      fail-fast: false
       matrix:
         python-versions: ['3.8', '3.9', '3.10', '3.11', '3.12']
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ matrix.python-versions }}
+          enable-cache: true
 
-      - name: Install dependencies
+      - name: Run tests
+        run: uv run --python ${{ matrix.python-versions }} --group test pytest --cov=qr_pay --cov-branch --cov-report=term-missing tests
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Format check
         run: |
-          python -m pip install --upgrade pip
-          pip install poetry tox tox-gh-actions
+          uv run --group test isort --check-only qr_pay tests
+          uv run --group test black --check qr_pay tests
 
-      - name: test with tox
-        run:
-          tox
+      - name: Lint
+        run: |
+          uv run --group test flake8 qr_pay tests
+          uv run --group test mypy qr_pay tests
